@@ -20,7 +20,7 @@ break them:
 
 3. **Report-only by default.** The ship step prints what it *would* send.
    Actually sending requires a flag, plus an environment variable, plus a
-   `confirm=True` in the code path — three independent gates on the one
+   `confirm=True` in the code path. That is three independent gates on the one
    action that reaches strangers' inboxes.
 
 ## Install
@@ -60,7 +60,7 @@ what it cannot know. Every provider is optional and skipped when unconfigured.
 | 2 | Hunter domain search: the domain's email *pattern* and known people; a returned pattern feeds back into stage 1 | free monthly quota |
 | 3 | Snov, GetProspect, Prospeo, Tomba name+domain finders, in quota order; anything not provider-verified is re-verified before it counts | free monthly quotas |
 | 4 | Anymail Finder, person-search only (1 credit, charged only on a *valid* hit) | paid, double-gated, monthly cap |
-| 5 | Apollo | paid, and deliberately **not** in the automatic cascade — explicit budgeted use only |
+| 5 | Apollo | paid, and deliberately **not** in the automatic cascade; explicit budgeted use only |
 
 ## The parts that took the longest to learn
 
@@ -79,7 +79,7 @@ mangled one refuses to spend until a human looks.
 
 **Fail loud on unrecorded spend.** If money was spent and the ledger write
 failed, that's `log.error` and a reconciliation instruction, never a debug
-line — the cap now under-counts and someone needs to know.
+line, because the cap now under-counts and someone needs to know.
 
 **"Risky" is discarded even when it's free.** Accepting risky addresses is
 trading tomorrow's deliverability for today's list size, which is the whole
@@ -107,7 +107,7 @@ fetch anything derived from scraped input, use it.
 ## Delivery guardrails
 
 The Instantly client blocks every write unless BOTH an environment variable
-(`INSTANTLY_ALLOW_WRITES=1`) and a `confirm=True` kwarg are present — an env
+(`INSTANTLY_ALLOW_WRITES=1`) and a `confirm=True` kwarg are present. An env
 var alone is too easy to leave exported, a kwarg alone means any code path
 can write. Bulk deletes have an extra ceiling and a third flag. Every write
 attempt, executed or blocked, is appended to an audit log, so "what touched
