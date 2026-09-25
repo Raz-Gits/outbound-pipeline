@@ -29,8 +29,12 @@ break them:
 git clone https://github.com/Raz-Gits/outbound-pipeline.git
 cd outbound-pipeline
 pip install -e .
-cp .env.example .env     # add your own keys; every provider is optional
+cp .env.example .env         # add your own keys; every provider is optional
+set -a; . ./.env; set +a     # export them into this shell
 ```
+
+Nothing in the code loads `.env` (keys are read with `os.getenv`), so the
+`set -a` line exports them into the shell; rerun it in each new terminal.
 
 Python 3.10+. One dependency (`httpx`).
 
@@ -65,7 +69,8 @@ what it cannot know. Every provider is optional and skipped when unconfigured.
 ## The parts that took the longest to learn
 
 **A stray key must never be enough to spend.** Every paid provider requires
-its key AND an explicit `ENABLE_*` flag. Keys leak into environments; intent
+its key AND an explicit enable flag: `ENABLE_ANYMAIL=1` for Anymail,
+`APOLLO_ENABLE=true` for Apollo. Keys leak into environments; intent
 shouldn't be inferable from an environment variable's mere existence.
 
 **Don't retry a timed-out paid call with a second key.** A 180-second SMTP
